@@ -15,3 +15,13 @@ rgbbgr x = [rgbb x, rgbg x, rgbr x];
 rgbgrb x = [rgbg x, rgbr x, rgbb x];
 rgbgbr x = [rgbg x, rgbb x, rgbr x];
 rgbbrg x = [rgbb x, rgbr x, rgbg x];
+
+{-
+
+Move only one of the three channels
+
+-}
+
+mover dxy x = [move dxy $ rgbr x, rgbg x, rgbb x];
+moveg dxy x = [rgbr x, move dxy $ rgbg x, rgbb x];
+moveb dxy x = [rgbr x, rgbg x, move dxy $ rgbb x];
