@@ -1,0 +1,38 @@
+{-
+
+ChronoHydra: a hydra that controls time and is therefore always punctual.
+
+This is a reimplementation of some Hydra Synth functions in Punctual.
+
+There are some key difference between the original functions and this version:
+
+- The names are generally shorter, to be consistent with Punctual naming. aesthetics.
+- There are generally fewer arguments. This is because functions in Punctual doesn't have optional parameters, so one would be forced to type all the parameters each time. Also, the effects of many parameters are easily mimicked in Punctual using simple operations.
+- There are some changes in the geometry, as Punctual uses a -1 to 1 coordinate range with (0,0) at the center, while Hydra uses a 0 to 1 coordinate range with (0,0) at the top-left corner.
+
+-}
+
+
+{-
+
+hosc is Hydra's osc (the change in naming is to avoid collision with the Punctual function named also osc). Sync argument has been removed, as it can be easily replicated with move.
+
+Example:
+
+move [saw (-0.3),0] $ hosc 200 0.5
+
+-}
+
+hosc freq offset = unipolar $ sin $ [-1,0,1]*offset+unipolar fx*freq;
+hoscp freq offset = unipolar $ sin $ [-1,0,1]*offset+:unipolar fx*freq;
+
+{-
+
+radius and smoothing are halved compared of those on Hydra, to adapt to Punctual's geometry.
+
+shape 4 0.5 0 is equivalent to rect 0 [0.5,0.5]
+
+-}
+
+shape sides radius smoothing = 1-(smoothstep {radius/2, radius/2+smoothing/2+0.0000001} $ cos ((floor $ 0.5+(xyt [fy,fx])/(2*pi/sides))*:(2*pi/sides)-(xyt [fy,fx])) * fr);
+shapep sides radius smoothing = 1-(smoothstepp {radius/2, radius/2+:smoothing/2+0.0000001} $ cos ((floor $ 0.5+(xyt [fy,fx])/(2*pi/sides))*:(2*pi/sides)-(xyt [fy,fx])) * fr);
