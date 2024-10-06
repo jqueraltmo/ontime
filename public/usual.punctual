@@ -1,0 +1,17 @@
+{-
+
+This is a set of utility functions for Punctual, that can be usually used.
+
+-}
+
+{-
+
+Reorder a 3-channel signal
+
+-}
+
+rgbrbg x = [rgbr x, rgbb x, rgbg x];
+rgbbgr x = [rgbb x, rgbg x, rgbr x];
+rgbgrb x = [rgbg x, rgbr x, rgbb x];
+rgbgbr x = [rgbg x, rgbb x, rgbr x];
+rgbbrg x = [rgbb x, rgbr x, rgbg x];
