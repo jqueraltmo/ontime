@@ -2,6 +2,8 @@
 
 ChronoHydra: a hydra that controls time and is therefore always punctual.
 
+import "https://ontime.savamala.top/chronohydra.punctual"
+
 This is a reimplementation of some Hydra Synth functions in Punctual.
 
 There are some key difference between the original functions and this version:
@@ -34,5 +36,18 @@ shape 4 0.5 0 is equivalent to rect 0 [0.5,0.5]
 
 -}
 
-shape sides radius smoothing = 1-(smoothstep {radius/2, radius/2+smoothing/2+0.0000001} $ cos ((floor $ 0.5+(xyt [fy,fx])/(2*pi/sides))*:(2*pi/sides)-(xyt [fy,fx])) * fr);
-shapep sides radius smoothing = 1-(smoothstepp {radius/2, radius/2+:smoothing/2+0.0000001} $ cos ((floor $ 0.5+(xyt [fy,fx])/(2*pi/sides))*:(2*pi/sides)-(xyt [fy,fx])) * fr);
+__shape_a = xyt [fy,fx];
+__shape_r sides = 2*pi/sides;
+__shape_c sides = floor (0.5+__shape_a / (__shape_r sides)) *: (__shape_r sides);
+__shape_d sides = cos (__shape_c sides - __shape_a) * fr;
+__star_d sides = abs $ sin (__shape_c sides - __shape_a)*fr;
+shape sides radius smoothing = 1-(smoothstep {radius/2, radius/2+smoothing/2+0.0000001} $ __shape_d sides);
+shapep sides radius smoothing = 1-(smoothstepp {radius/2, radius/2+:smoothing/2+0.0000001} $ __shape_d sides);
+star sides radius smoothing = 1-(smoothstep {radius/2, radius/2+smoothing/2+0.0000001} $ __shape_d sides+:3*__star_d sides);
+starp sides radius smoothing = 1-(smoothstepp {radius/2, radius/2+:smoothing/2+0.0000001} $ __shape_d sides+:3*__star_d sides);
+stard sides smoothing deepness = 1-(smoothstep {0.5, 0.5+smoothing/2+0.0000001} $ __shape_d sides+:deepness*__star_d sides);
+stardp sides smoothing deepness = 1-(smoothstepp {0.5, 0.5+smoothing/2+0.0000001} $ __shape_d sides+:deepness*:__star_d sides);
+
+
+__kaleid n = abs $ (ft % (2*pi/n))-:pi/n;
+kaleid nSides = setfxy (fr*{cos $ __kaleid nSides, sin $ __kaleid nSides});
