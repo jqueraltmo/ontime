@@ -35,3 +35,25 @@ A subtractive color mixing function
 -}
 
 cmix c1 c2 = abs $ c2 -: c1;
+
+black =	[0,0,0];
+white	= [1,1,1];
+red	= [1,0,0];
+lime = [0,1,0];
+blue = [0,0,1];
+yellow = [1,1,0];
+cyan = [0,1,1];
+magenta = [1,0,1];
+silver = [0.75,0.75,0.75];
+gray = [0.5,0.5,0.5];
+maroon = [0.5,0,0];
+olive = [0.5,0.5,0];
+green = [0,0.5,0];
+purple = [0.5,0,0.5];
+teal = [0,0.5,0.5];
+navy = [0,0,0.5];
+orange = [1,0.65,0];
+turquoise = [0.25,0.88,0.82];
+violet = [0.93,0.51,0.93];
+pink = [1,0.75,0.8];
+lavender = [0.9,0.9,0.98];
