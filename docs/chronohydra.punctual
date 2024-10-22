@@ -1,40 +1,5 @@
-{-
-
-ChronoHydra: a hydra that controls time and is therefore always punctual.
-
-import "https://ontime.savamala.top/chronohydra.punctual"
-
-This is a reimplementation of some Hydra Synth functions in Punctual.
-
-There are some key difference between the original functions and this version:
-
-- The names are generally shorter, to be consistent with Punctual naming. aesthetics.
-- There are generally fewer arguments. This is because functions in Punctual doesn't have optional parameters, so one would be forced to type all the parameters each time. Also, the effects of many parameters are easily mimicked in Punctual using simple operations.
-- There are some changes in the geometry, as Punctual uses a -1 to 1 coordinate range with (0,0) at the center, while Hydra uses a 0 to 1 coordinate range with (0,0) at the top-left corner.
-
--}
-
-
-{-
-
-hosc is Hydra's osc (the change in naming is to avoid collision with the Punctual function named also osc). Sync argument has been removed, as it can be easily replicated with move.
-
-Example:
-
-move [saw (-0.3),0] $ hosc 200 0.5
-
--}
-
 hosc freq offset = unipolar $ sin $ [-1,0,1]*offset+unipolar fx*freq;
 hoscp freq offset = unipolar $ sin $ [-1,0,1]*offset+:unipolar fx*freq;
-
-{-
-
-radius and smoothing are halved compared of those on Hydra, to adapt to Punctual's geometry.
-
-shape 4 0.5 0 is equivalent to rect 0 [0.5,0.5]
-
--}
 
 __shape_a = xyt [fy,fx];
 __shape_r sides = 2*pi/sides;
@@ -43,11 +8,32 @@ __shape_d sides = cos (__shape_c sides - __shape_a) * fr;
 __star_d sides = abs $ sin (__shape_c sides - __shape_a)*fr;
 shape sides radius smoothing = 1-(smoothstep {radius/2, radius/2+smoothing/2+0.0000001} $ __shape_d sides);
 shapep sides radius smoothing = 1-(smoothstepp {radius/2, radius/2+:smoothing/2+0.0000001} $ __shape_d sides);
+
 star sides radius smoothing = 1-(smoothstep {radius/2, radius/2+smoothing/2+0.0000001} $ __shape_d sides+:3*__star_d sides);
 starp sides radius smoothing = 1-(smoothstepp {radius/2, radius/2+:smoothing/2+0.0000001} $ __shape_d sides+:3*__star_d sides);
 stard sides smoothing deepness = 1-(smoothstep {0.5, 0.5+smoothing/2+0.0000001} $ __shape_d sides+:deepness*__star_d sides);
 stardp sides smoothing deepness = 1-(smoothstepp {0.5, 0.5+smoothing/2+0.0000001} $ __shape_d sides+:deepness*:__star_d sides);
 
-
 __kaleid n = abs $ (ft % (2*pi/n))-:pi/n;
 kaleid nSides = setfxy (fr*{cos $ __kaleid nSides, sin $ __kaleid nSides});
+
+pixelate xy = setfxy $ (0.5+floor (fxy*:(xy/2)))/:(xy/2);
+
+posterize bins gamma gr = ((floor $ gr ** gamma * bins)/:bins)**:(1/:gamma);
+
+posterizep bins gamma gr = ((floor $ gr **: gamma *: bins)/:bins)**:(1/:gamma);
+
+
+{-
+dot x y = mono $ x*:y;
+__luma threshold tolerance gr = smoothstep [threshold-(tolerance+0.0000001), threshold+(tolerance+0.0000001)] $ dot gr {0.2125,0.7154,0.0721};
+luma threshold tolerance gr = [gr++1]*(__luma threshold tolerance gr);
+
+float a = smoothstep(threshold-(tolerance+0.0000001), threshold+(tolerance+0.0000001), _luminance(_c0.rgb));
+   return vec4(_c0.rgb*a, a);`
+
+float _luminance(vec3 rgb){
+     const vec3 W = vec3(0.2125, 0.7154, 0.0721);
+     return dot(rgb, W);
+}
+-}
