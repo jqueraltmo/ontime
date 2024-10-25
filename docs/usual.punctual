@@ -63,3 +63,7 @@ mirrory pos = setfy $ (abs (fy - pos)) - pos;
 
 movex dx = move [dx,0];
 movey dy = move [0,dy];
+
+spin2 x = spin [x, (-1)*x];
+
+inv x = 1-x;
