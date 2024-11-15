@@ -58,8 +58,9 @@ violet = [0.93,0.51,0.93];
 pink = [1,0.75,0.8];
 lavender = [0.9,0.9,0.98];
 
-mirrorx pos = setfx $ (abs (fx - pos)) - pos;
-mirrory pos = setfy $ (abs (fy - pos)) - pos;
+mirrorx pos l = setfx $ (abs $ (fx-pos+l)%(2*l)-l) + pos;
+mirrory pos l = setfy $ (abs $ (fy-pos+l)%(2*l)-l) + pos;
+mirrorxy pos l = setfxy $ (abs $ (fxy-:pos+:l)%:(2*l)-:l) +: pos;
 
 movex dx = move [dx,0];
 movey dy = move [0,dy];
@@ -67,3 +68,5 @@ movey dy = move [0,dy];
 spin2 x = spin [x, (-1)*x];
 
 inv x = 1-x;
+
+onceosc f = (sin (f*etime*2*pi))*(etime<(1/f));
