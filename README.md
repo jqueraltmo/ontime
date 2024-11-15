@@ -63,7 +63,7 @@ The non-combinatorial version of `stard`.
 
 Equivalent to Hydra's `kaleid`, except it takes the image to repeat from the center, not from the top left side.
 
-## Usual: function that I usually use inside Punctual
+## Usual: functions that I usually use inside Punctual
 
 ```
 import "https://ontime.savamala.top/usual.punctual";
