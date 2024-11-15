@@ -1,38 +1,12 @@
-{-
-
-This is a set of utility functions for Punctual, that can be usually used.
-
-import "https://ontime.savamala.top/usual.punctual";
-
--}
-
-{-
-
-Reorder a 3-channel signal
-
--}
-
 rgbrbg x = [rgbr x, rgbb x, rgbg x];
 rgbbgr x = [rgbb x, rgbg x, rgbr x];
 rgbgrb x = [rgbg x, rgbr x, rgbb x];
 rgbgbr x = [rgbg x, rgbb x, rgbr x];
 rgbbrg x = [rgbb x, rgbr x, rgbg x];
 
-{-
-
-Move only one of the three channels
-
--}
-
 mover dxy x = [move dxy $ rgbr x, rgbg x, rgbb x];
 moveg dxy x = [rgbr x, move dxy $ rgbg x, rgbb x];
 moveb dxy x = [rgbr x, rgbg x, move dxy $ rgbb x];
-
-{-
-
-A subtractive color mixing function
-
--}
 
 cmix c1 c2 = abs $ c2 -: c1;
 

@@ -4,7 +4,9 @@ Punctual extensions
 
 ## ChronoHydra: a hydra that controls time and is therefore always punctual.
 
+```
 import "https://ontime.savamala.top/chronohydra.punctual";
+```
 
 This is a reimplementation of some Hydra Synth functions in Punctual.
 
@@ -60,3 +62,47 @@ The non-combinatorial version of `stard`.
 - `kaleid nSides`
 
 Equivalent to Hydra's `kaleid`, except it takes the image to repeat from the center, not from the top left side.
+
+## Usual: function that I usually use inside Punctual
+
+```
+import "https://ontime.savamala.top/usual.punctual";
+```
+
+- `rgbrbg`, `rgbbgr`...
+
+Reorder a 3-channel signal.
+
+- `mover`, `moveg`, `moveb`
+
+Move only one of the three channels.
+
+- `cmix c1 c2`
+
+A subtractive color mixing function.
+
+- `black`, `white`, `red`, `lime`...
+
+A list of colors.
+
+- `mirrorx pos l`, `mirrory`, `mirrorxy`
+
+Creates a mirroring effect with repetitions. Inspired by @GEIKHA's `hydra-fractals`.
+
+`mirrorx 0.4 0.3 graph` creates a mirror at x=0.4, repeating every 0.3 units.
+
+- `movex dx`, `movey dy`
+
+Shortcuts for `move [dx,0]` and `move [0,dy]`.
+
+- `spin2 x`
+
+Shortcut for `spin [x, (-1)*x]`.
+
+- `inv x`
+
+Shortcut for `1-x`.
+
+- `onceosc f`
+
+An oscillator that runs only once, starting at 0 when the expression is executed.
