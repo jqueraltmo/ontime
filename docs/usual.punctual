@@ -36,6 +36,9 @@ mirrorx pos l = setfx $ (abs $ (fx-pos+l)%(2*l)-l) + pos;
 mirrory pos l = setfy $ (abs $ (fy-pos+l)%(2*l)-l) + pos;
 mirrorxy pos l = setfxy $ (abs $ (fxy-:pos+:l)%:(2*l)-:l) +: pos;
 
+__hyper_d = sqrt $ 1-fx*fx-fy*fy;
+hyper g = (__hyper_d>0)*(setfxy (fxy/__hyper_d) g);
+
 movex dx = move [dx,0];
 movey dy = move [0,dy];
 
