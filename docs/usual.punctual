@@ -47,3 +47,6 @@ spin2 x = spin [x, (-1)*x];
 inv x = 1-x;
 
 onceosc f = (sin (f*etime*2*pi))*(etime<(1/f));
+
+setfr r = setfxy $ rtxy [r,ft];
+mirrorr r = setfr $ r-(abs (r-(fr % (2*r))));
