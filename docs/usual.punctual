@@ -49,7 +49,7 @@ inv x = 1-x;
 setfr r = setfxy $ rtxy [r,ft];
 mirrorr r = setfr $ r-(abs (r-(fr % (2*r))));
 
-ontop a b = a*:(mono a>0)+:b*(mono a<=0);
+ontop a b = a*:(mono a>0)+:b*:(mono a<=0);
 
 __gradx speed = unipolar fx + saw speed;
 __gradi speed = 1 - (abs $ (__gradx speed -2 * (floor $ __gradx speed/2)) -1);
