@@ -23,7 +23,8 @@ posterize bins gamma gr = ((floor $ gr ** gamma * bins)/:bins)**:(1/:gamma);
 
 posterizep bins gamma gr = ((floor $ gr **: gamma *: bins)/:bins)**:(1/:gamma);
 
-colorama amount p = fract $ hsvrgb $ amount+:rgbhsv p;
+col amount p = fract $ hsvrgb $ amount+:rgbhsv p;
+colt amount p = fract $ hsvrgb $ (amount+:rgbhsv p)*:(p > 0);
 
 hadd amount p1 p2 = p1+:p2*:amount;
 hsub amount p1 p2 = p1-:p2*:amount;
