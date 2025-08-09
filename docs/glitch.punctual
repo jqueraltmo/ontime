@@ -3,6 +3,7 @@ Generadors de nombres pseudo-aleatoris
 --}
 rand seed = fract $ sin (fx*12.9898+fy*78.233) * seed;
 randt seed = fract $ sin (fx*12.9898+fy*78.233+etime*43.1284) * seed;
+div b a = floor (a *: b)/:(b-1);
 
 {--
 i << img "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Lilac-breasted_roller_%28Coracias_caudatus%29_Kruger.jpg/1024px-Lilac-breasted_roller_%28Coracias_caudatus%29_Kruger.jpg";
