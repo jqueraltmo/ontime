@@ -46,6 +46,8 @@ spin2 x = spin [x, (-1)*x];
 
 inv x = 1-x;
 
+div b a = floor (a *: b)/:(b-1);
+
 setfr r = setfxy $ rtxy [r,ft];
 mirrorr r = setfr $ r-(abs (r-(fr % (2*r))));
 
