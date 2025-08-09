@@ -1,0 +1,60 @@
+{--
+Generadors de nombres pseudo-aleatoris
+--}
+rand seed = fract $ sin (fx*12.9898+fy*78.233) * seed;
+randt seed = fract $ sin (fx*12.9898+fy*78.233+etime*43.1284) * seed;
+
+{--
+i << img "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Lilac-breasted_roller_%28Coracias_caudatus%29_Kruger.jpg/1024px-Lilac-breasted_roller_%28Coracias_caudatus%29_Kruger.jpg";
+i+:0.5*rand 2483.245 >> add;
+
+(i+:[osc [0.1,0.19,0.093]]*:randt [2483.245345,43564.34545,3455.34574])%1 >> add;
+--}
+
+{--
+Aplica un desplaçament a una regió determinada, i crea un glitch horitzontal a la part que s'ha desplaçat.
+--}
+
+__blksh_rest region disp = 1-:(maxp region (move disp region));
+__blksh_subs region disp = maxp 0 $ region-:(move disp region);
+blksh region disp = setfxy ((fxy-:disp)*:(move disp region)+:fxy*:(__blksh_rest region disp)+:fy*:(__blksh_subs region disp));
+
+{--
+r << rect [0,0.2] [0.4,0.3];
+blksh r [0.2,0.3] i >> add;
+--}
+
+{--
+Aplica un desplaçament només al canal vermell, i el desplaçament oposat al canal blau.
+--}
+
+move_clr d p = move d (rgbr p)++rgbg p++move ((-1)*d) (rgbb p);
+
+{--
+move_clr [0.1,0.3] i >> add;
+--}
+
+move_rgb d p = move (rgbr d) (rgbr p) ++ move (rgbg d) (rgbg p) ++ move (rgbb d) (rgbb p);
+
+{--
+Aplica una distorsió de color en franges horitzontals regulars.
+--}
+scanln freq thick color i = (i+:(unipolar (sin (fy*freq)) < thick)*:color)%1;
+{--
+scanln 100 0.3 [0.03, -0.09, 0.01] i >> add;
+--}
+
+{--
+Aplica un desplaçament aleatori als fragments dins d'una regió.
+La variant amb t fa que el desplaçament canviï amb el temps.
+--}
+addrjmp region maxd seed = move $ (rand [seed,1.326*seed]*maxd*2-maxd)*region;
+addrjmpt region maxd seed = move $ (randt [seed, 1.326*seed]*maxd*2-maxd)*region;
+{--
+r << rect 0 1;
+addrjmpt r 0.1 437.5453 i >> add;
+--}
+
+__dctGlitch_d1 g = 0.02 *: (2 **: floor g);
+__dctGlitch_d2 g = (fract g) *: (__dctGlitch_d1 g);
+dctGlitch y amt g = move [ amt *: (((div (y/2) fy) % (__dctGlitch_d1 g)) <= (__dctGlitch_d2 g)), 0 ];
