@@ -3,7 +3,7 @@ Generadors de nombres pseudo-aleatoris
 --}
 rndg t seed = fract $ sin (fx*12.9898 + fy*78.233 + t*43.1284 + 0.1234) * seed;
 rndxy seed = rndg 0 seed;
-rndt seed = rndt etime seed;
+rndt seed = rndg etime seed;
 
 {--
 i << img "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Lilac-breasted_roller_%28Coracias_caudatus%29_Kruger.jpg/1024px-Lilac-breasted_roller_%28Coracias_caudatus%29_Kruger.jpg";
