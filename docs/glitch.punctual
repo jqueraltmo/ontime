@@ -1,15 +1,22 @@
 {--
 Generadors de nombres pseudo-aleatoris
 --}
-rand seed = fract $ sin (fx*12.9898+fy*78.233) * seed;
-randt seed = fract $ sin (fx*12.9898+fy*78.233+etime*43.1284) * seed;
-div b a = floor (a *: b)/:(b-1);
+rndg t seed = fract $ sin (fx*12.9898 + fy*78.233 + t*43.1284 + 0.1234) * seed;
+rndxy seed = rndg 0 seed;
+rndt seed = rndt etime seed;
 
 {--
 i << img "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Lilac-breasted_roller_%28Coracias_caudatus%29_Kruger.jpg/1024px-Lilac-breasted_roller_%28Coracias_caudatus%29_Kruger.jpg";
-i+:0.5*rand 2483.245 >> add;
+i+:0.5*rndxy 2483.245 >> add;
 
-(i+:[osc [0.1,0.19,0.093]]*:randt [2483.245345,43564.34545,3455.34574])%1 >> add;
+(i+:[osc [0.1,0.19,0.093]]*:rndt [2483.245345,43564.34545,3455.34574])%1 >> add;
+--}
+
+div b a = floor (a *: b)/:(b-1);
+
+{--
+rndg (div 3 etime) 634.25 >> add;
+rndg ((div 3 etime)%fy) 634.25 >> add;
 --}
 
 {--
@@ -49,8 +56,8 @@ scanln 100 0.3 [0.03, -0.09, 0.01] i >> add;
 Aplica un desplaçament aleatori als fragments dins d'una regió.
 La variant amb t fa que el desplaçament canviï amb el temps.
 --}
-addrjmp region maxd seed = move $ (rand [seed,1.326*seed]*maxd*2-maxd)*region;
-addrjmpt region maxd seed = move $ (randt [seed, 1.326*seed]*maxd*2-maxd)*region;
+addrjmp region maxd seed = move $ (rndxy [seed,1.326*seed]*maxd*2-maxd)*region;
+addrjmpt region maxd seed = move $ (rndt [seed, 1.326*seed]*maxd*2-maxd)*region;
 {--
 r << rect 0 1;
 addrjmpt r 0.1 437.5453 i >> add;
