@@ -1,7 +1,7 @@
 rndg t seed = fract $ sin (fx*12.9898 + fy*78.233 + t*43.1284 + 0.1234) * seed;
 rndxy seed = rndg 0 seed;
 rndt seed = rndg etime seed;
-fortuna seed = rndg etime seed;
+fortuna seed = bipolar $ rndg etime seed;
 arcana1 = img "https://savamala.top/img/tarot/a";
 arcana2 = img "https://savamala.top/img/tarot/b";
 arcana3 = img "https://savamala.top/img/tarot/c";
