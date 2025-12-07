@@ -13,3 +13,7 @@ arcana8 = img "https://savamala.top/img/tarot/h";
 arcana9 = img "https://savamala.top/img/tarot/i";
 ontop a b = a*:(mono a>0)+:b*:(mono a<=0);
 aura a b = a*:(mono a>0)+:b*:(mono a<=0);
+__blksh_rest region disp = 1-:(maxp region (move disp region));
+__blksh_subs region disp = maxp 0 $ region-:(move disp region);
+blksh region disp = setfxy ((fxy-:disp)*:(move disp region)+:fxy*:(__blksh_rest region disp)+:fy*:(__blksh_subs region disp));
+journey region disp = blksh region dist;
