@@ -17,3 +17,5 @@ __blksh_rest region disp = 1-:(maxp region (move disp region));
 __blksh_subs region disp = maxp 0 $ region-:(move disp region);
 blksh region disp = setfxy ((fxy-:disp)*:(move disp region)+:fxy*:(__blksh_rest region disp)+:fy*:(__blksh_subs region disp));
 journey region disp = blksh region dist;
+past a = (etime<3)*a;
+future a = (etime>2.8)*a;
