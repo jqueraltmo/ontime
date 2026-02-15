@@ -19,6 +19,19 @@ rndg (div 3 etime) 634.25 >> add;
 rndg ((div 3 etime)%fy) 634.25 >> add;
 --}
 
+blur t s a = move [t*[bipolar (rndxy [s*3.73, s*4.11])+:bipolar (rndxy [s*1.61,s*2.52])]/2] a;
+
+{--
+i << img "https://savamala.top/img/st1.png";
+bkg << img "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Phnom_Bakheng_temple_at_Angkor%2C_Cambodia.jpg/3840px-Phnom_Bakheng_temple_at_Angkor%2C_Cambodia.jpg";
+t << max 0 (etime-5);
+t2 << smoothstep [30,20] etime;
+t3 << max 0 (etime-30);
+zoom 2 bkg >> add;
+b << blur (t/100) (48.34*osc 30.42) i;
+b++((mono b>0)*t2) >> blend;
+--}
+
 {--
 Aplica un desplaçament a una regió determinada, i crea un glitch horitzontal a la part que s'ha desplaçat.
 --}
