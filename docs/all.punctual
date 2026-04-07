@@ -1,0 +1,117 @@
+hosc freq offset = unipolar $ sin $ [-1,0,1]*offset+unipolar fx*freq;
+hoscp freq offset = unipolar $ sin $ [-1,0,1]*offset+:unipolar fx*freq;
+
+__shape_a = xyt [fy,fx];
+__shape_r sides = 2*pi/sides;
+__shape_c sides = floor (0.5+__shape_a / (__shape_r sides)) *: (__shape_r sides);
+__shape_d sides = cos (__shape_c sides - __shape_a) * fr;
+__star_d sides = abs $ sin (__shape_c sides - __shape_a)*fr;
+shape sides radius smoothing = 1-(smoothstep {radius/2, radius/2+smoothing/2+0.0000001} $ __shape_d sides);
+shapep sides radius smoothing = 1-(smoothstepp {radius/2, radius/2+:smoothing/2+0.0000001} $ __shape_d sides);
+
+star sides radius smoothing = 1-(smoothstep {radius/2, radius/2+smoothing/2+0.0000001} $ __shape_d sides+:3*__star_d sides);
+starp sides radius smoothing = 1-(smoothstepp {radius/2, radius/2+:smoothing/2+0.0000001} $ __shape_d sides+:3*__star_d sides);
+stard sides smoothing deepness = 1-(smoothstep {0.5, 0.5+smoothing/2+0.0000001} $ __shape_d sides+:deepness*__star_d sides);
+stardp sides smoothing deepness = 1-(smoothstepp {0.5, 0.5+smoothing/2+0.0000001} $ __shape_d sides+:deepness*:__star_d sides);
+
+__kaleid n = abs $ (ft % (2*pi/n))-:pi/n;
+kaleid nSides = setfxy (fr*{cos $ __kaleid nSides, sin $ __kaleid nSides});
+
+pixelate xy = setfxy $ (0.5+floor (fxy*:(xy/2)))/:(xy/2);
+
+posterize bins gamma gr = ((floor $ gr ** gamma * bins)/:bins)**:(1/:gamma);
+
+posterizep bins gamma gr = ((floor $ gr **: gamma *: bins)/:bins)**:(1/:gamma);
+
+col amount p = fract $ hsvrgb $ amount+:rgbhsv p;
+colt amount p = fract $ hsvrgb $ (amount+:rgbhsv p)*:(p > 0);
+
+hadd amount p1 p2 = p1+:p2*:amount;
+hsub amount p1 p2 = p1-:p2*:amount;
+hblend amount p1 p2 = p1*:(1-:amount)+:p2*:amount;
+
+rndg t seed = fract $ sin (fx*12.9898 + fy*78.233 + t*43.1284 + 0.1234) * seed;
+rndxy seed = rndg 0 seed;
+rndt seed = rndg etime seed;
+rndf t seed = fract $ sin (t*43.1284 + 0.1234) * seed;
+
+div b a = floor (a *: b)/:(b-1);
+
+blur t s a = move [t*[bipolar (rndxy [s*3.73, s*4.11])+:bipolar (rndxy [s*1.61,s*2.52])]/2] a;
+
+__blksh_rest region disp = 1-:(maxp region (move disp region));
+__blksh_subs region disp = maxp 0 $ region-:(move disp region);
+blksh region disp = setfxy ((fxy-:disp)*:(move disp region)+:fxy*:(__blksh_rest region disp)+:fy*:(__blksh_subs region disp));
+
+move_clr d p = move d (rgbr p)++rgbg p++move ((-1)*d) (rgbb p);
+
+move_rgb d p = move (rgbr d) (rgbr p) ++ move (rgbg d) (rgbg p) ++ move (rgbb d) (rgbb p);
+
+scanln freq thick color i = (i+:(unipolar (sin (fy*freq)) < thick)*:color)%1;
+
+addrjmp region maxd seed = move $ (rndxy [seed,1.326*seed]*maxd*2-maxd)*region;
+addrjmpt region maxd seed = move $ (rndt [seed, 1.326*seed]*maxd*2-maxd)*region;
+
+__dctGlitch_d1 g = 0.02 *: (2 **: floor g);
+__dctGlitch_d2 g = (fract g) *: (__dctGlitch_d1 g);
+dctGlitch y amt g = move [ amt *: (((div (y/2) fy) % (__dctGlitch_d1 g)) <= (__dctGlitch_d2 g)), 0 ];
+
+__jasmin speed size = (pixelate [size*(rndf (div speed time) 38.31),size*(rndf (div speed time) 93.28)] $ rndg (div speed time) 831.28) > 0.9;
+jasmin speed size = blksh (__jasmin speed size) (0.5*(bipolar $ rndf (div speed time) [823.24,732.52]));
+
+rgbrbg x = [rgbr x, rgbb x, rgbg x];
+rgbbgr x = [rgbb x, rgbg x, rgbr x];
+rgbgrb x = [rgbg x, rgbr x, rgbb x];
+rgbgbr x = [rgbg x, rgbb x, rgbr x];
+rgbbrg x = [rgbb x, rgbr x, rgbg x];
+
+mover dxy x = [move dxy $ rgbr x, rgbg x, rgbb x];
+moveg dxy x = [rgbr x, move dxy $ rgbg x, rgbb x];
+moveb dxy x = [rgbr x, rgbg x, move dxy $ rgbb x];
+
+cmix c1 c2 = abs $ c2 -: c1;
+
+black =	[0,0,0];
+white	= [1,1,1];
+red	= [1,0,0];
+lime = [0,1,0];
+blue = [0,0,1];
+yellow = [1,1,0];
+cyan = [0,1,1];
+magenta = [1,0,1];
+silver = [0.75,0.75,0.75];
+gray = [0.5,0.5,0.5];
+maroon = [0.5,0,0];
+olive = [0.5,0.5,0];
+green = [0,0.5,0];
+purple = [0.5,0,0.5];
+teal = [0,0.5,0.5];
+navy = [0,0,0.5];
+orange = [1,0.65,0];
+turquoise = [0.25,0.88,0.82];
+violet = [0.93,0.51,0.93];
+pink = [1,0.75,0.8];
+lavender = [0.9,0.9,0.98];
+
+mirrorx pos l = setfx $ (abs $ (fx-pos+l)%(2*l)-l) + pos;
+mirrory pos l = setfy $ (abs $ (fy-pos+l)%(2*l)-l) + pos;
+mirrorxy pos l = setfxy $ (abs $ (fxy-:pos+:l)%:(2*l)-:l) +: pos;
+
+__hyper_d = sqrt $ 1-fx*fx-fy*fy;
+hyper g = (__hyper_d>0)*(setfxy (fxy/__hyper_d) g);
+
+movex dx = move [dx,0];
+movey dy = move [0,dy];
+
+spin2 x = spin [x, (-1)*x];
+
+inv x = 1-x;
+
+setfr r = setfxy $ rtxy [r,ft];
+mirrorr r = setfr $ r-(abs (r-(fr % (2*r))));
+
+ontop a b = a*:(mono a>0)+:b*:(mono a<=0);
+
+__gradx speed = unipolar fx + saw speed;
+__gradi speed = 1 - (abs $ (__gradx speed -2 * (floor $ __gradx speed/2)) -1);
+grad c0 c1 speed = mix c0 c1 $ __gradi speed;
