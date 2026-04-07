@@ -4,6 +4,7 @@ Generadors de nombres pseudo-aleatoris
 rndg t seed = fract $ sin (fx*12.9898 + fy*78.233 + t*43.1284 + 0.1234) * seed;
 rndxy seed = rndg 0 seed;
 rndt seed = rndg etime seed;
+rndf t seed = fract $ sin (t*43.1284 + 0.1234) * seed;
 
 {--
 i << img "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Lilac-breasted_roller_%28Coracias_caudatus%29_Kruger.jpg/1024px-Lilac-breasted_roller_%28Coracias_caudatus%29_Kruger.jpg";
@@ -79,3 +80,12 @@ addrjmpt r 0.1 437.5453 i >> add;
 __dctGlitch_d1 g = 0.02 *: (2 **: floor g);
 __dctGlitch_d2 g = (fract g) *: (__dctGlitch_d1 g);
 dctGlitch y amt g = move [ amt *: (((div (y/2) fy) % (__dctGlitch_d1 g)) <= (__dctGlitch_d2 g)), 0 ];
+
+
+__jasmin speed size = (pixelate [size*(rndf (div speed time) 38.31),size*(rndf (div speed time) 93.28)] $ rndg (div speed time) 831.28) > 0.9;
+jasmin speed size = blksh (__jasmin speed size) (0.5*(bipolar $ rndf (div speed time) [823.24,732.52]));
+
+{-
+i << img "https://savamala.top/img/cemetery.jpg";
+jasmin 8 20 i >> add;
+-}
