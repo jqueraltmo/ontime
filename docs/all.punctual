@@ -121,5 +121,8 @@ rndrect seed speed = rect [bipolar $ rndf (div speed etime) [seed,seed*1.23]] $ 
 blackglitch region pat = (0*region+:(1-region))*pat;
 zoomglitch region z pat = zoom (z*region+:(1-region)) pat;
 
+-- r i r2 entre 0 i 1
+spiro__ r r2 = rtxy [1-r, etime*4]+:rtxy {r*:r2, (-1)*etime*4*(1/r-1)};
+spiro r r2 w = linep [espiro__ r r2] [early (1/30) $ espiro__ r r2] w;
 
 -- saw1 f = bipolar $ clip [0,1] $ (max 0 (etime-2))*f;
